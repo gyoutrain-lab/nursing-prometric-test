@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Medical Surgical Nursing Prometric Simulation Test</title>
+
+  <!-- Open Graph meta tags for WhatsApp / social preview -->
+  <meta property="og:title" content="Medical Surgical Nursing Prometric Simulation Test" />
+  <meta property="og:description" content="Prepare yourself for the official Prometric exam. Click below to begin." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/gyoutrain-lab/nursing-prometric-test/main/icon.jpg" />
+  <meta property="og:url" content="https://gyoutrain-lab.github.io/nursing-prometric-test/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://raw.githubusercontent.com/gyoutrain-lab/nursing-prometric-test/main/icon.jpg" type="image/png">
+
+  <!-- Styling -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(to bottom right, #e8f0fe, #ffffff);
+      margin: 0;
+      padding: 60px 20px;
+      color: #1e3a8a;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      padding: 40px;
+      max-width: 500px;
+      margin: auto;
+    }
+    img.icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 20%;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 17px;
+      color: #374151;
+      margin-bottom: 30px;
+    }
+    a.button {
+      display: inline-block;
+      background-color: #1e3a8a;
+      color: white;
+      padding: 14px 40px;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 12px;
+      transition: background-color 0.3s ease;
+    }
+    a.button:hover {
+      background-color: #3b82f6;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <img src="https://raw.githubusercontent.com/gyoutrain-lab/nursing-prometric-test/main/icon.jpg" alt="Prometric Icon" class="icon">
+    <h1>Medical Surgical Nursing Prometric Simulation Test</h1>
+    <p>Prepare yourself for the official Prometric exam. Click below to begin.</p>
+    <a href="https://gyoutrain-lab.github.io/nursing-prometric-test/" class="button">Start the Test</a>
+  </div>
+
+  <footer>
+    Prepared by <strong>Giyono Asfarrasyid</strong><br>
+    ETK Yogyakarta
+  </footer>
+</body>
+</html>
