@@ -4,103 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Medical Surgical Nursing Prometric Simulation Test</title>
-
-<!-- Favicon and Open Graph -->
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/gyoutrain-lab/nursing-prometric-test/main/icon.png">
-<meta property="og:title" content="Medical Surgical Nursing Prometric Simulation Test">
-<meta property="og:description" content="Prepare yourself for the official Prometric exam.">
-<meta property="og:image" content="https://raw.githubusercontent.com/gyoutrain-lab/nursing-prometric-test/main/icon.png">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://gyoutrain-lab.github.io/nursing-prometric-test/">
-
 <style>
-body { font-family: Arial, sans-serif; background:#f0f4f7; text-align:center; padding:20px;}
-h1 { color:#1a202c; margin-bottom:10px;}
-p { color:#4a5568; margin-bottom:20px;}
-img.icon { width:120px; margin-bottom:20px;}
-button { padding:12px 24px; font-size:16px; background:#3182ce; color:white; border:none; border-radius:8px; cursor:pointer; margin:5px 0;}
-button:hover { background:#2b6cb0;}
-.container { max-width:700px; margin:auto; background:white; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1);}
-ul { list-style:none; padding:0; }
-li { margin:10px 0; }
-.score { font-weight:bold; margin-top:20px; font-size:18px; }
-.rationale { font-style:italic; color:#2d3748; margin-top:5px; }
+body { font-family: Arial, sans-serif; margin: 20px; }
+h1 { text-align: center; }
+#quiz { max-width: 800px; margin: auto; }
+button { padding: 10px 15px; margin-top: 10px; }
+.option { display: block; margin: 8px 0; }
+.rationale { margin-top: 10px; font-style: italic; color: #333; }
 </style>
 </head>
 <body>
-
-<img src="https://raw.githubusercontent.com/gyoutrain-lab/nursing-prometric-test/main/icon.png" alt="Test Icon" class="icon">
 <h1>Medical Surgical Nursing Prometric Simulation Test</h1>
-<p>Prepare yourself for the official Prometric exam.</p>
-
-<div class="container" id="quiz-container">
-  <button id="start-btn">Start Test</button>
+<div id="quiz">
+  <div id="question"></div>
+  <div id="options"></div>
+  <button id="nextBtn" onclick="nextQuestion()">Next</button>
+  <div id="score"></div>
 </div>
 
 <script>
-// Paste your JSON directly here
-const questions = [{"number":1,"question":"A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?","options":["Notify the provider","Administer oxygen and elevate head","Start chest compressions","Give prescribed anticoagulant"],"correctLetter":"B","rationale":"Oxygen and positioning improve oxygenation immediately; definitive treatment follows."},{"number":2,"question":"A patient on warfarin has INR 6.0. What should the nurse anticipate?","options":["Increase warfarin dose","Hold dose and give vitamin K","Give additional heparin","No action needed"],"correctLetter":"B","rationale":"INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects."}, /* ...continue all 100 items here */];
+// Paste your spreadsheet data here:
+const questions = [
+  {
+    question: "A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?",
+    options: ["Notify the provider","Administer oxygen and elevate head","Start chest compressions","Give prescribed anticoagulant"],
+    correct: "B",
+    rationale: "Oxygen and positioning improve oxygenation immediately; definitive treatment follows."
+  },
+  {
+    question: "A patient on warfarin has INR 6.0. What should the nurse anticipate?",
+    options: ["Increase warfarin dose","Hold dose and give vitamin K","Give additional heparin","No action needed"],
+    correct: "B",
+    rationale: "INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects."
+  },
+  // Add all remaining questions here following the same format
+];
 
-let currentQuestion = 0;
+let current = 0;
 let score = 0;
 
-const container = document.getElementById('quiz-container');
-const startBtn = document.getElementById('start-btn');
-
-// Shuffle function
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-// Start the quiz
-startBtn.addEventListener('click', () => {
-  container.innerHTML = '<p>Loading questions...</p>';
-  currentQuestion = 0;
-  score = 0;
-  shuffle(questions);
-  showQuestion();
-});
-
-// Show question
 function showQuestion() {
-  if(currentQuestion >= questions.length){
-    container.innerHTML = `<p class="score">Test completed! Your score: ${score} / ${questions.length}</p>`;
-    return;
-  }
-
-  const q = questions[currentQuestion];
-  container.innerHTML = `
-    <h2>Question ${currentQuestion+1} of ${questions.length}</h2>
-    <p>${q.question}</p>
-    <ul>
-      ${q.options.map((opt, i) => `<li><button class="option-btn" data-letter="${String.fromCharCode(65+i)}">${opt}</button></li>`).join('')}
-    </ul>
-    <div class="rationale" id="rationale"></div>
-  `;
-
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const selected = btn.getAttribute('data-letter');
-      const rationaleDiv = document.getElementById('rationale');
-      if(selected === q.correctLetter){
-        score++;
-        rationaleDiv.innerHTML = `Correct! ✅ ${q.rationale}`;
-      } else {
-        rationaleDiv.innerHTML = `Incorrect ❌ Correct answer: ${q.correctLetter}. ${q.rationale}`;
-      }
-      // Wait 2 seconds before next question
-      setTimeout(() => {
-        currentQuestion++;
-        showQuestion();
-      }, 2000);
-    });
+  const q = questions[current];
+  document.getElementById("question").textContent = (current + 1) + ". " + q.question;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  ["A","B","C","D"].forEach((letter, idx) => {
+    const btn = document.createElement("button");
+    btn.textContent = letter + ". " + q.options[idx];
+    btn.className = "option";
+    btn.onclick = () => checkAnswer(letter);
+    optionsDiv.appendChild(btn);
   });
 }
-</script>
 
+function checkAnswer(selected) {
+  const q = questions[current];
+  if(selected === q.correct) score++;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = `<p class="rationale">Correct answer: ${q.correct}. ${q.rationale}</p>`;
+}
+
+function nextQuestion() {
+  if(current < questions.length - 1){
+    current++;
+    showQuestion();
+  } else {
+    document.getElementById("quiz").innerHTML = `<h2>Quiz Finished!</h2><p>Your score: ${score} / ${questions.length}</p>`;
+  }
+}
+
+// Initialize
+showQuestion();
+</script>
 </body>
 </html>
