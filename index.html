@@ -3,34 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medical Surgical Nursing Prometric Test</title>
-  <meta property="og:title" content="Medical Surgical Nursing Prometric Test" />
-  <meta property="og:description" content="Prepare yourself for the official Prometric exam. Click below to begin." />
+  <title>Medical Surgical Nursing — Prometric Simulation Test</title>
+
+  <!-- ✅ WhatsApp / Open Graph preview -->
+  <meta property="og:title" content="Medical Surgical Nursing — Prometric Simulation Test" />
+  <meta property="og:description" content="Prepare yourself for the official Prometric exam. Click below to begin your test." />
   <meta property="og:image" content="https://gyoutrain-lab.github.io/nursing-prometric-test/icon.png" />
   <meta property="og:url" content="https://gyoutrain-lab.github.io/nursing-prometric-test/" />
   <meta name="theme-color" content="#1e3a8a" />
+
   <style>
     body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6fa;
+      color: #1e3a8a;
       text-align: center;
-      background: #f0f4f8;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 80px 20px;
+      padding: 50px 20px;
     }
-    .button {
+    img {
+      width: 100px;
+      margin-bottom: 20px;
+      border-radius: 24px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #555;
+    }
+    .question-box {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      margin: 30px auto;
+      max-width: 500px;
+      text-align: left;
+    }
+    .option {
+      background: #e0e7ff;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .option:hover {
+      background: #c7d2fe;
+    }
+    .correct {
+      background-color: #c6f6d5 !important; /* green */
+    }
+    .incorrect {
+      background-color: #feb2b2 !important; /* red */
+    }
+    .next-btn {
+      margin-top: 20px;
+      padding: 10px 25px;
+      border: none;
       background: #1e3a8a;
       color: white;
-      padding: 14px 36px;
       border-radius: 30px;
-      text-decoration: none;
-      font-size: 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .next-btn:hover {
+      background: #3749b7;
+    }
+    .footer {
+      margin-top: 40px;
+      color: red;
+      font-size: 0.9rem;
+    }
+    .stats {
+      font-size: 0.95rem;
+      color: #333;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <img src="icon.png" width="120" alt="App Icon" />
-  <h1>Medical Surgical Nursing Prometric Test</h1>
-  <p>Prepare yourself for the official Prometric exam.<br>Click below to begin.</p>
-  https://script.google.com/macros/s/AKfycbzwN5yeSXhP-kDnizDfMv7yVWhZE_GXMC-_zMAKlDEdku-m4RnZWXaZpys7CJYYjY5yVw/exec
-  <p style="margin-top:40px;color:#777;">Prepared by <b>Giyono Asfarrasyid</b>, ETK Yogyakarta</p>
+  <img src="icon.png" alt="App Icon" />
+  <h1>🩺 Medical Surgical Nursing — Prometric Simulation Test</h1>
+  <div id="status">⏳ Loading...</div>
+  <div class="question-box" id="quiz" style="display:none;"></div>
+  <div class="footer">Prepared by Giyono Asfarrasyid, ETK Yogyakarta</div>
+
+  <script>
+    const scriptUrl = "https://script.google.com/macros/s/AKfycby4UKAAxodHiVYB3w4ps6_KCZewb6z2BqRwWn0viGJ1Uz6tSnIBwtHsOn7yVcLQMHSV/exec";
+
+    let questions = [];
+    let index = 0;
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let startTime;
+
+    async function loadQuestions() {
+      try {
+        const res = await fetch(scriptUrl);
+        questions = await res.json();
+
+        if (!Array.isArray(questions)) throw new Error("Invalid data");
+        document.getElementById("status").style.display = "none";
+        document.getElementById("quiz").style.display = "block";
+        startTime = Date.now();
+        showQuestion();
+      } catch (e) {
+        document.getElementById("status").innerHTML = "⚠️ Error loading questions!";
+      }
+    }
+
+    function showQuestion() {
+      if (index >= questions.length) {
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const percent = ((correctCount / questions.length) * 100).toFixed(1);
+        document.getElementById("quiz").innerHTML = `
+          <h3>🏁 Test Complete!</h3>
+          <p>✅ Correct: ${correctCount}<br>❌ Incorrect: ${incorrectCount}<br>📊 Score: ${percent}%<br>⏱ Time: ${timeTaken}s</p>
+        `;
+        return;
+      }
+
+      const q = questions[index];
+      const total = questions.length;
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `
+        <div class="stats">Time: ${formatTime()} | Score: ✅ ${correctCount} | ❌ ${incorrectCount} | 📊 ${((correctCount / (index||1))*100).toFixed(1)}%</div>
+        <h3>Question ${index + 1} of ${total}</h3>
+        <p><b>Q${index + 1}.</b> ${q.question}</p>
+        ${q.options.map((opt, i) => `<div class="option" onclick="checkAnswer(this, '${String.fromCharCode(65 + i)}', '${q.correctLetter}', '${q.rationale}')">${opt}</div>`).join('')}
+      `;
+    }
+
+    function checkAnswer(element, selected, correct, rationale) {
+      const options = document.querySelectorAll(".option");
+      options.forEach(opt => opt.onclick = null);
+
+      if (selected === correct) {
+        element.classList.add("correct");
+        correctCount++;
+      } else {
+        element.classList.add("incorrect");
+        incorrectCount++;
+      }
+
+      const rationaleDiv = document.createElement("div");
+      rationaleDiv.style.marginTop = "10px";
+      rationaleDiv.innerHTML = `💡 <b>Rationale:</b> ${rationale}`;
+      document.getElementById("quiz").appendChild(rationaleDiv);
+
+      const nextButton = document.createElement("button");
+      nextButton.innerText = "Next";
+      nextButton.className = "next-btn";
+      nextButton.onclick = () => {
+        index++;
+        showQuestion();
+      };
+      document.getElementById("quiz").appendChild(nextButton);
+    }
+
+    function formatTime() {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = String(Math.floor(elapsed / 60)).padStart(2, "0");
+      const seconds = String(elapsed % 60).padStart(2, "0");
+      return `${minutes}:${seconds}`;
+    }
+
+    loadQuestions();
+  </script>
 </body>
 </html>
