@@ -1,61 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Medical Surgical Nursing Prometric Test</title>
-<style>
-body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
-h1 { text-align: center; }
-.question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 0 5px rgba(0,0,0,0.1);}
-.options label { display: block; margin: 5px 0; }
-button { margin-top: 20px; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
-.result { margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 10px; display:none; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical Surgical Prometric Simulation Test</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f8fb;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      width: 95%;
+      max-width: 700px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 25px 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #004d7a;
+    }
+
+    .question-box {
+      margin: 20px 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 2px solid #004d7a;
+      border-radius: 10px;
+      background: #e9f3fb;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .options button:hover {
+      background: #cce4f6;
+    }
+
+    .options button.correct {
+      background: #a8f0c6;
+      border-color: #2e8b57;
+    }
+
+    .options button.wrong {
+      background: #f5a3a3;
+      border-color: #b22222;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      padding: 10px 25px;
+      background: #004d7a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .controls button:hover {
+      background: #007bbd;
+    }
+
+    .result {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #004d7a;
+    }
+
+    .rationale {
+      background: #f2f9ff;
+      border-left: 5px solid #007bbd;
+      padding: 10px;
+      margin-top: 10px;
+      font-style: italic;
+      color: #333;
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-<h1>Medical Surgical Nursing Prometric Test</h1>
-<div id="quiz"></div>
-<button id="submit">Submit Answers</button>
-<div class="result" id="result"></div>
+  <div class="container">
+    <h1>Medical Surgical Prometric Simulation Test</h1>
+    <div id="quiz-box">
+      <div id="question" class="question-box"></div>
+      <div id="options" class="options"></div>
+      <div id="rationale" class="rationale"></div>
+      <div class="controls">
+        <button id="next-btn">Next Question</button>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
 
-<script>
-// Paste all 100 questions here
-const questions = [
-  {"number":1,"question":"A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?","options":["Notify the provider","Administer oxygen and elevate head","Start chest compressions","Give prescribed anticoagulant"],"correctLetter":"B","rationale":"Oxygen and positioning improve oxygenation immediately; definitive treatment follows."},
-  {"number":2,"question":"A patient on warfarin has INR 6.0. What should the nurse anticipate?","options":["Increase warfarin dose","Hold dose and give vitamin K","Give additional heparin","No action needed"],"correctLetter":"B","rationale":"INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects."},
-  // ... continue all 100 questions here exactly as in your JSON ...
-];
+  <script>
+    const questions = [
+      { question: "A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?", options: { A: "Notify the provider", B: "Administer oxygen and elevate head", C: "Start chest compressions", D: "Give prescribed anticoagulant" }, correct: "B", rationale: "Oxygen and positioning improve oxygenation immediately; definitive treatment follows." },
+      { question: "A patient on warfarin has INR 6.0. What should the nurse anticipate?", options: { A: "Increase warfarin dose", B: "Hold dose and give vitamin K", C: "Give additional heparin", D: "No action needed" }, correct: "B", rationale: "INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects." },
+      { question: "A patient with COPD is receiving O₂ at 6 L/min via nasal cannula. The nurse’s best action is", options: { A: "Maintain as prescribed", B: "Reduce to 2 L/min and reassess", C: "Change to non-rebreather mask", D: "Encourage deep breathing" }, correct: "B", rationale: "High flow can suppress respiratory drive; maintain ≤2 L/min in COPD." },
+    ];
 
-const quizDiv = document.getElementById('quiz');
+    let current = 0;
+    let score = 0;
 
-questions.forEach(q => {
-  const div = document.createElement('div');
-  div.classList.add('question');
-  div.innerHTML = `<strong>${q.number}. ${q.question}</strong>`;
-  const optionsDiv = document.createElement('div');
-  optionsDiv.classList.add('options');
-  q.options.forEach((opt, idx) => {
-    const letter = String.fromCharCode(65+idx);
-    optionsDiv.innerHTML += `
-      <label>
-        <input type="radio" name="q${q.number}" value="${letter}"> ${letter}. ${opt}
-      </label>`;
-  });
-  div.appendChild(optionsDiv);
-  quizDiv.appendChild(div);
-});
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const resultEl = document.getElementById("result");
+    const rationaleEl = document.getElementById("rationale");
 
-document.getElementById('submit').addEventListener('click', () => {
-  let score = 0;
-  questions.forEach(q => {
-    const answer = document.querySelector(`input[name="q${q.number}"]:checked`);
-    if(answer && answer.value === q.correctLetter) score++;
-  });
-  const resultDiv = document.getElementById('result');
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML = `You scored ${score} out of ${questions.length}`;
-});
-</script>
+    function showQuestion() {
+      let q = questions[current];
+      questionEl.textContent = `${current + 1}. ${q.question}`;
+      optionsEl.innerHTML = "";
+      rationaleEl.style.display = "none";
+      for (let key in q.options) {
+        let btn = document.createElement("button");
+        btn.textContent = `${key}. ${q.options[key]}`;
+        btn.onclick = () => checkAnswer(key, btn);
+        optionsEl.appendChild(btn);
+      }
+      nextBtn.style.display = "none";
+    }
+
+    function checkAnswer(selected, btn) {
+      const q = questions[current];
+      const allBtns = optionsEl.querySelectorAll("button");
+      allBtns.forEach(b => b.disabled = true);
+      if (selected === q.correct) {
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        allBtns.forEach(b => {
+          if (b.textContent.startsWith(q.correct)) b.classList.add("correct");
+        });
+      }
+      rationaleEl.textContent = "Rationale: " + q.rationale;
+      rationaleEl.style.display = "block";
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      questionEl.textContent = "Test Completed!";
+      optionsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      rationaleEl.style.display = "none";
+      resultEl.textContent = `Your Score: ${score} / ${questions.length}`;
+    }
+
+    showQuestion();
+  </script>
 </body>
 </html>
