@@ -5,75 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Medical Surgical Nursing Prometric Simulation Test</title>
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; }
-h1 { text-align: center; }
-#quiz { max-width: 800px; margin: auto; }
-button { padding: 10px 15px; margin-top: 10px; }
-.option { display: block; margin: 8px 0; }
-.rationale { margin-top: 10px; font-style: italic; color: #333; }
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; background: #f8f9fa; }
+  h1 { text-align: center; }
+  .question { margin-bottom: 20px; }
+  .options button { display: block; margin: 5px 0; padding: 10px; width: 100%; cursor: pointer; }
+  .rationale { margin-top: 10px; font-style: italic; color: #333; }
+  .correct { background-color: #d4edda; }
+  .wrong { background-color: #f8d7da; }
+  #nextBtn { margin-top: 20px; padding: 10px 20px; cursor: pointer; }
 </style>
 </head>
 <body>
 <h1>Medical Surgical Nursing Prometric Simulation Test</h1>
-<div id="quiz">
-  <div id="question"></div>
-  <div id="options"></div>
-  <button id="nextBtn" onclick="nextQuestion()">Next</button>
-  <div id="score"></div>
-</div>
-
+<div id="quiz"></div>
+<button id="nextBtn" style="display:none;">Next Question</button>
 <script>
-// Paste your spreadsheet data here:
+// Paste your questions data here (from Google Sheet JSON)
 const questions = [
-  {
-    question: "A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?",
-    options: ["Notify the provider","Administer oxygen and elevate head","Start chest compressions","Give prescribed anticoagulant"],
-    correct: "B",
-    rationale: "Oxygen and positioning improve oxygenation immediately; definitive treatment follows."
-  },
-  {
-    question: "A patient on warfarin has INR 6.0. What should the nurse anticipate?",
-    options: ["Increase warfarin dose","Hold dose and give vitamin K","Give additional heparin","No action needed"],
-    correct: "B",
-    rationale: "INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects."
-  },
-  // Add all remaining questions here following the same format
+  {"number":1,"question":"A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?","options":["Notify the provider","Administer oxygen and elevate head","Start chest compressions","Give prescribed anticoagulant"],"correctLetter":"B","rationale":"Oxygen and positioning improve oxygenation immediately; definitive treatment follows."},
+  {"number":2,"question":"A patient on warfarin has INR 6.0. What should the nurse anticipate?","options":["Increase warfarin dose","Hold dose and give vitamin K","Give additional heparin","No action needed"],"correctLetter":"B","rationale":"INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects."}
+  // Continue with all other questions...
 ];
 
 let current = 0;
-let score = 0;
 
 function showQuestion() {
   const q = questions[current];
-  document.getElementById("question").textContent = (current + 1) + ". " + q.question;
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-  ["A","B","C","D"].forEach((letter, idx) => {
-    const btn = document.createElement("button");
-    btn.textContent = letter + ". " + q.options[idx];
-    btn.className = "option";
-    btn.onclick = () => checkAnswer(letter);
-    optionsDiv.appendChild(btn);
-  });
+  const quizDiv = document.getElementById('quiz');
+  quizDiv.innerHTML = `
+    <div class="question"><strong>Q${q.number}:</strong> ${q.question}</div>
+    <div class="options">
+      ${q.options.map((opt,i)=>`<button onclick="checkAnswer(this,'${String.fromCharCode(65+i)}')">${opt}</button>`).join('')}
+    </div>
+    <div class="rationale" id="rationale"></div>
+  `;
+  document.getElementById('nextBtn').style.display = 'none';
 }
 
-function checkAnswer(selected) {
+function checkAnswer(btn, letter) {
   const q = questions[current];
-  if(selected === q.correct) score++;
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = `<p class="rationale">Correct answer: ${q.correct}. ${q.rationale}</p>`;
-}
+  const buttons = btn.parentElement.querySelectorAll('button');
+  buttons.forEach(b => b.disabled = true);
 
-function nextQuestion() {
-  if(current < questions.length - 1){
-    current++;
-    showQuestion();
+  if(letter === q.correctLetter) {
+    btn.classList.add('correct');
   } else {
-    document.getElementById("quiz").innerHTML = `<h2>Quiz Finished!</h2><p>Your score: ${score} / ${questions.length}</p>`;
+    btn.classList.add('wrong');
+    buttons[[0,1,2,3].find(i=>String.fromCharCode(65+i)===q.correctLetter)].classList.add('correct');
   }
+
+  document.getElementById('rationale').textContent = "Rationale: " + q.rationale;
+  document.getElementById('nextBtn').style.display = 'block';
 }
 
-// Initialize
+document.getElementById('nextBtn').addEventListener('click', () => {
+  current++;
+  if(current < questions.length) showQuestion();
+  else document.getElementById('quiz').innerHTML = "<h2>Quiz Completed!</h2>";
+});
+
+// Initialize first question
 showQuestion();
 </script>
 </body>
