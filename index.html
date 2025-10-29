@@ -3,186 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medical Surgical Prometric Simulation Test</title>
+  <title>Medical & Surgical Nursing Prometric Simulation Test</title>
 
+  <!-- ✅ Open Graph Meta Tags (Facebook, WhatsApp, LinkedIn) -->
+  <meta property="og:title" content="Medical & Surgical Nursing Prometric Simulation Test">
+  <meta property="og:description" content="Take a real Prometric-style simulation test for Medical & Surgical Nursing — 100 randomized questions, countdown timer, and rationales.">
+  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/2966/2966481.png">
+  <meta property="og:url" content="https://yourgithubusername.github.io/medical-surgical-prometric/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ETK Yogyakarta">
+
+  <!-- ✅ Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Medical & Surgical Nursing Prometric Simulation Test">
+  <meta name="twitter:description" content="Prometric-style Nursing Exam • 100 Randomized Questions • Countdown Timer • Score & Rationales">
+  <meta name="twitter:image" content="https://cdn-icons-png.flaticon.com/512/2966/2966481.png">
+
+  <!-- ✅ Favicon -->
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2966/2966481.png" />
+
+  <!-- ✅ Optional styling for clean preview -->
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f4f8fb;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      background: white;
-      width: 95%;
-      max-width: 700px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 25px 30px;
-    }
-
-    h1 {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #222;
       text-align: center;
-      color: #004d7a;
+      padding: 40px;
     }
-
-    .question-box {
-      margin: 20px 0;
-      font-size: 18px;
-      font-weight: 500;
-    }
-
-    .options button {
+    .logo {
+      width: 100px;
+      margin: 20px auto;
       display: block;
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      border: 2px solid #004d7a;
-      border-radius: 10px;
-      background: #e9f3fb;
+    }
+    h1 {
+      font-size: 22px;
+      color: #004aad;
+    }
+    p {
       font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .options button:hover {
-      background: #cce4f6;
-    }
-
-    .options button.correct {
-      background: #a8f0c6;
-      border-color: #2e8b57;
-    }
-
-    .options button.wrong {
-      background: #f5a3a3;
-      border-color: #b22222;
-    }
-
-    .controls {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .controls button {
-      padding: 10px 25px;
-      background: #004d7a;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .controls button:hover {
-      background: #007bbd;
-    }
-
-    .result {
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 20px;
-      color: #004d7a;
-    }
-
-    .rationale {
-      background: #f2f9ff;
-      border-left: 5px solid #007bbd;
-      padding: 10px;
-      margin-top: 10px;
-      font-style: italic;
       color: #333;
-      display: none;
+      max-width: 600px;
+      margin: 10px auto 20px;
+    }
+    .btn {
+      background: #007bff;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #0056b3; }
+    footer {
+      margin-top: 40px;
+      color: red;
+      font-weight: 600;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Medical Surgical Prometric Simulation Test</h1>
-    <div id="quiz-box">
-      <div id="question" class="question-box"></div>
-      <div id="options" class="options"></div>
-      <div id="rationale" class="rationale"></div>
-      <div class="controls">
-        <button id="next-btn">Next Question</button>
-      </div>
-      <div class="result" id="result"></div>
-    </div>
-  </div>
 
-  <script>
-    const questions = [
-      { question: "A post-op patient suddenly develops chest pain and shortness of breath. The nurse suspects pulmonary embolism. What is the priority action?", options: { A: "Notify the provider", B: "Administer oxygen and elevate head", C: "Start chest compressions", D: "Give prescribed anticoagulant" }, correct: "B", rationale: "Oxygen and positioning improve oxygenation immediately; definitive treatment follows." },
-      { question: "A patient on warfarin has INR 6.0. What should the nurse anticipate?", options: { A: "Increase warfarin dose", B: "Hold dose and give vitamin K", C: "Give additional heparin", D: "No action needed" }, correct: "B", rationale: "INR >5 indicates risk for bleeding; vitamin K reverses warfarin effects." },
-      { question: "A patient with COPD is receiving O₂ at 6 L/min via nasal cannula. The nurse’s best action is", options: { A: "Maintain as prescribed", B: "Reduce to 2 L/min and reassess", C: "Change to non-rebreather mask", D: "Encourage deep breathing" }, correct: "B", rationale: "High flow can suppress respiratory drive; maintain ≤2 L/min in COPD." },
-    ];
+  <img src="https://cdn-icons-png.flaticon.com/512/2966/2966481.png" alt="Medical Logo" class="logo" />
+  <h1>Medical & Surgical Nursing Prometric Simulation Test</h1>
+  <p>
+    100 randomized questions • 100-minute countdown • rationales and scoring<br>
+    <strong>Prepared by: Giyono Asfarrasyid, ETK Yogyakarta</strong>
+  </p>
+  <a href="https://script.google.com/macros/s/AKfycbybKnuV8zx3SKFLVcAa4gMY9I-7FgiHU3gzWhiVGV_Wg-6LonmfgZttyZ79GDMfrX-WVg/exec" 
+     class="btn" target="_blank">🚀 Start Simulation Test</a>
 
-    let current = 0;
-    let score = 0;
+  <footer>
+    ✉️ gyouskill@gmail.com
+  </footer>
 
-    const questionEl = document.getElementById("question");
-    const optionsEl = document.getElementById("options");
-    const nextBtn = document.getElementById("next-btn");
-    const resultEl = document.getElementById("result");
-    const rationaleEl = document.getElementById("rationale");
-
-    function showQuestion() {
-      let q = questions[current];
-      questionEl.textContent = `${current + 1}. ${q.question}`;
-      optionsEl.innerHTML = "";
-      rationaleEl.style.display = "none";
-      for (let key in q.options) {
-        let btn = document.createElement("button");
-        btn.textContent = `${key}. ${q.options[key]}`;
-        btn.onclick = () => checkAnswer(key, btn);
-        optionsEl.appendChild(btn);
-      }
-      nextBtn.style.display = "none";
-    }
-
-    function checkAnswer(selected, btn) {
-      const q = questions[current];
-      const allBtns = optionsEl.querySelectorAll("button");
-      allBtns.forEach(b => b.disabled = true);
-      if (selected === q.correct) {
-        btn.classList.add("correct");
-        score++;
-      } else {
-        btn.classList.add("wrong");
-        allBtns.forEach(b => {
-          if (b.textContent.startsWith(q.correct)) b.classList.add("correct");
-        });
-      }
-      rationaleEl.textContent = "Rationale: " + q.rationale;
-      rationaleEl.style.display = "block";
-      nextBtn.style.display = "inline-block";
-    }
-
-    nextBtn.addEventListener("click", () => {
-      current++;
-      if (current < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
-    });
-
-    function showResult() {
-      questionEl.textContent = "Test Completed!";
-      optionsEl.innerHTML = "";
-      nextBtn.style.display = "none";
-      rationaleEl.style.display = "none";
-      resultEl.textContent = `Your Score: ${score} / ${questions.length}`;
-    }
-
-    showQuestion();
-  </script>
 </body>
 </html>
